@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import _ from 'lodash'
 import AsyncStorage from '@react-native-community/async-storage'
-import { StyleSheet } from 'react-native'
 import { AppLoading } from 'expo'
 import Slides from '../components/Slides'
 

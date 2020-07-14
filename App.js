@@ -3,7 +3,8 @@ import InitalizeFB from './fbBootstrap'
 import React, { useEffect } from 'react'
 import { StyleSheet, Platform } from 'react-native'
 import { Button, Icon } from 'react-native-elements'
-
+// import AsyncStorage from '@react-native-community/async-storage'
+import { PersistGate } from 'redux-persist/es/integration/react'
 import { NavigationContainer } from '@react-navigation/native'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { createStackNavigator } from '@react-navigation/stack'
@@ -14,7 +15,7 @@ import DeckScreen from './src/screens/DeckScreen'
 import ReviewScreen from './src/screens/ReviewScreen'
 import ResetScreen from './src/screens/ResetScreen'
 import { Provider } from 'react-redux'
-import store from './src/store'
+import configureStore from './src/store'
 
 const MainTab = createBottomTabNavigator()
 const Tab = createBottomTabNavigator()
@@ -93,18 +94,23 @@ const SecondaryTab = () => {
 }
 
 export default function App() {
+  const { persistor, store } = configureStore()
   useEffect(() => {
+    // AsyncStorage.removeItem('fb_token')
+
     InitalizeFB()
   }, [])
   return (
     <Provider store={store}>
-      <NavigationContainer>
-        <MainTab.Navigator tabBar={() => null}>
-          <MainTab.Screen name='Welcome' component={WelcomeScreen} />
-          <MainTab.Screen name='Auth' component={AuthScreen} />
-          <MainTab.Screen name='Maps' component={SecondaryTab} />
-        </MainTab.Navigator>
-      </NavigationContainer>
+      <PersistGate persistor={persistor}>
+        <NavigationContainer>
+          <MainTab.Navigator tabBar={() => null}>
+            <MainTab.Screen name='Welcome' component={WelcomeScreen} />
+            <MainTab.Screen name='Auth' component={AuthScreen} />
+            <MainTab.Screen name='Maps' component={SecondaryTab} />
+          </MainTab.Navigator>
+        </NavigationContainer>
+      </PersistGate>
     </Provider>
   )
 }
