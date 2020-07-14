@@ -1,14 +1,22 @@
 import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
-
-const ResetScreen = () => {
+import * as actions from '../actions'
+import { Button } from 'react-native-elements'
+import { connect } from 'react-redux'
+const ResetScreen = ({ clearLikedJobs }) => {
   return (
     <View>
-      <Text>Reset Screen</Text>
+      <Button
+        large
+        title='Reset Liked Jobs'
+        icon={{ name: 'delete-forever' }}
+        buttonStyle={{ backgroundColor: '#f44336' }}
+        onPress={clearLikedJobs}
+      />
     </View>
   )
 }
 
-export default ResetScreen
+export default connect(null, actions)(ResetScreen)
 
 const styles = StyleSheet.create({})

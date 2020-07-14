@@ -1,8 +1,8 @@
 import 'react-native-gesture-handler'
 import InitalizeFB from './fbBootstrap'
 import React, { useEffect } from 'react'
-import { StyleSheet } from 'react-native'
-import { Button } from 'react-native-elements'
+import { StyleSheet, Platform } from 'react-native'
+import { Button, Icon } from 'react-native-elements'
 
 import { NavigationContainer } from '@react-navigation/native'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
@@ -27,6 +27,9 @@ const StackNavigator = () => {
         name='Review'
         component={ReviewScreen}
         options={({ navigation }) => ({
+          tabBarIcon: ({ color }) => (
+            <Icon name='my-location' size={30} color={color} />
+          ),
           title: 'Review Jobs',
           headerRight: () => (
             <Button
@@ -39,16 +42,52 @@ const StackNavigator = () => {
           )
         })}
       />
-      <Stack.Screen name='Settings' component={ResetScreen} />
+      <Stack.Screen
+        name='Settings'
+        component={ResetScreen}
+        options={{
+          headerStyle: { marginTop: Platform.OS === 'android' ? 24 : 0 }
+        }}
+      />
     </Stack.Navigator>
   )
 }
 const SecondaryTab = () => {
   return (
-    <Tab.Navigator>
-      <Tab.Screen name='Map' component={MapScreen} />
-      <Tab.Screen name='Deck' component={DeckScreen} />
-      <Tab.Screen name='Review Stack' component={StackNavigator} />
+    <Tab.Navigator
+      tabBarOptions={{
+        labelStyle: { fontSize: 12 }
+      }}
+      tabBarPosition='bottom'
+    >
+      <Tab.Screen
+        name='Map'
+        options={{
+          tabBarIcon: ({ color }) => (
+            <Icon name='my-location' size={30} color={color} />
+          )
+        }}
+        component={MapScreen}
+      />
+      <Tab.Screen
+        name='Deck'
+        component={DeckScreen}
+        options={{
+          title: 'Jobs',
+          tabBarIcon: ({ color }) => (
+            <Icon name='description' size={30} color={color} />
+          )
+        }}
+      />
+      <Tab.Screen
+        name='Review Jobs'
+        component={StackNavigator}
+        options={{
+          tabBarIcon: ({ color }) => (
+            <Icon name='favorite' size={30} color={color} />
+          )
+        }}
+      />
     </Tab.Navigator>
   )
 }
