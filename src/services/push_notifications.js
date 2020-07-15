@@ -7,7 +7,7 @@ const PUSH_ENDPOINT = 'https://exp.host/--/api/v2/push/send'
 export default async () => {
   try {
     const previousToken = await AsyncStorage.getItem('push_token')
-    console.log(previousToken)
+    // console.log(previousToken)
     if (!previousToken) {
       const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS)
 
@@ -16,7 +16,7 @@ export default async () => {
       }
 
       const token = await Notifications.getExpoPushTokenAsync()
-      console.log(token, 'token')
+      // console.log(token, 'token')
       const message = {
         to: token,
         sound: 'Hi Man',
@@ -24,7 +24,7 @@ export default async () => {
         body: 'There 12 new Jobs near yoe',
         data: { data: 'Additional Data' }
       }
-      await axios.post(PUSH_ENDPOINT, message)
+      // await axios.post(PUSH_ENDPOINT, message)
 
       await AsyncStorage.setItem('push_token', token)
     }
