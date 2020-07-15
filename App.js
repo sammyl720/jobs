@@ -1,9 +1,10 @@
 import 'react-native-gesture-handler'
 import InitalizeFB from './fbBootstrap'
 import React, { useEffect } from 'react'
-import { StyleSheet, Platform } from 'react-native'
+import { StyleSheet, Platform, Alert } from 'react-native'
 import { Button, Icon } from 'react-native-elements'
-// import AsyncStorage from '@react-native-community/async-storage'
+import { Notifications } from 'expo'
+import registerForNotifications from './src/services/push_notifications'
 import { PersistGate } from 'redux-persist/es/integration/react'
 import { NavigationContainer } from '@react-navigation/native'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
@@ -96,9 +97,18 @@ const SecondaryTab = () => {
 export default function App() {
   const { persistor, store } = configureStore()
   useEffect(() => {
-    // AsyncStorage.removeItem('fb_token')
-
+    registerForNotifications()
+    const subscriber = Notifications.addListener(
+      ({ data: { text }, origin }) => {
+        if (origin === 'received' && text) {
+          Alert.alert('New Push Notification', text, [{ text: 'Ok' }])
+        }
+      }
+    )
     InitalizeFB()
+    return () => {
+      subscriber.remove()
+    }
   }, [])
   return (
     <Provider store={store}>
